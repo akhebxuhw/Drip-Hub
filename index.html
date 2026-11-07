@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">
+<title>Drip Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg class="defs" width="0" height="0" aria-hidden="true"><defs>
+  <filter id="lgf" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feImage id="lgImg" x="0" y="0" width="222" height="68" preserveAspectRatio="none" result="m"/>
+    <feDisplacementMap in="SourceGraphic" in2="m" scale="34" xChannelSelector="R" yChannelSelector="B"/>
+  </filter>
+</defs></svg>
+
+<canvas id="stars"></canvas>
+<div id="glow"></div>
+
+<header class="top glass">
+  <a class="logo" href="#">DRIP<span>HUB</span></a>
+  <nav><a href="#shop" data-i18n="nav_shop">Shop</a></nav>
+  <div class="tools">
+    <div class="pill glass lite cwrap magnetic"><span id="cLabel">🇶🇦 QAR</span><select id="cSel" aria-label="Country"></select></div>
+    <button id="langBtn" class="pill glass lite magnetic">عربي</button>
+    <button id="themeBtn" class="pill glass lite magnetic" aria-label="Theme"><span class="ico">☾</span></button>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <p class="eyebrow" data-i18n="eyebrow">Authentic brands · Street ready</p>
+  <h1 id="heroTitle"><span class="w">DRIP</span><span class="w out">HUB</span></h1>
+  <p class="sub" data-i18n="sub">The biggest names in clothing and sneakers, all in one place.</p>
+  <a href="#shop" class="btn magnetic" data-i18n="cta">Start shopping</a>
+</section>
+
+<div class="marquee"><div class="track" id="marquee"></div></div>
+
+<main id="shop">
+  <h2 class="reveal" data-i18n="brands">Brands</h2>
+  <div id="brandBar" class="chips"></div>
+  <div id="catBar" class="chips cats"></div>
+  <div id="grid" class="grid"></div>
+  <p id="empty" class="empty hidden" data-i18n="empty">Nothing here yet.</p>
+</main>
+
+<footer>
+  <p class="muted">© Drip Hub</p>
+  <button id="adminEntry" class="btn hidden">Open Dashboard →</button>
+</footer>
+
+<!-- Bottom dock: Home / Search / Cart -->
+<nav id="dock" class="dock glass" aria-label="Main">
+  <span class="lens" id="lens"></span>
+  <div class="dk-items">
+    <button class="dk on" data-a="home" aria-label="Home">
+      <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>
+      <span class="lb" data-i18n="home">Home</span>
+    </button>
+    <button class="dk" data-a="search" aria-label="Search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+      <span class="lb" data-i18n="search">Search</span>
+    </button>
+    <button class="dk" data-a="cart" id="cartBtn" aria-label="Cart">
+      <svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+      <span class="lb" data-i18n="cart">Cart</span>
+      <b id="cartCount" class="count">0</b>
+    </button>
+  </div>
+  <div class="dk-search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+    <input id="q" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Search products, brands…">
+    <button id="qClose" aria-label="Close">✕</button>
+  </div>
+</nav>
+
+<!-- Product modal -->
+<div id="modal" class="modal">
+  <div class="mbox glass">
+    <button class="pill glass lite mclose" id="mClose">✕</button>
+    <div class="mimg"><img id="mImg" alt=""></div>
+    <div class="minfo">
+      <small id="mMeta"></small>
+      <h2 id="mName"></h2>
+      <div class="price" id="mPrice"></div>
+      <p id="mDesc"></p>
+      <span id="mStock" class="status"></span>
+      <button id="mAdd" class="btn" data-i18n="add">Add to cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cart -->
+<div id="cartOv" class="ov"></div>
+<aside id="cart" class="cart glass">
+  <div class="chead"><h3 data-i18n="cart">Cart</h3><button class="pill glass lite" id="cartClose">✕</button></div>
+  <div id="cartItems"></div>
+  <div id="cartFoot"></div>
+</aside>
+
+<!-- Password gate -->
+<div id="pw" class="modal pwm">
+  <div class="pwbox glass">
+    <div class="lockico"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg></div>
+    <h3>Dashboard</h3>
+    <p class="muted">Enter the password to continue</p>
+    <form id="pwForm" autocomplete="off">
+      <input id="pwIn" type="password" placeholder="Password" autocomplete="new-password" required>
+      <button class="btn">Unlock</button>
+    </form>
+    <p id="pwErr" class="pwerr"></p>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dash" class="dash" dir="ltr">
+  <div class="dash-in">
+    <div class="dash-head">
+      <h2>Dashboard</h2>
+      <button id="dashClose" class="pill glass lite">✕</button>
+    </div>
+
+    <section class="panel glass">
+      <h3>Brands & categories</h3>
+      <form id="brandForm" class="row">
+        <input id="brandName" placeholder="Brand name (e.g. Nike)" required>
+        <button class="btn sm">Add brand</button>
+      </form>
+      <div id="brandList"></div>
+    </section>
+
+    <section class="panel glass">
+      <h3>Add product</h3>
+      <form id="prodForm" class="form">
+        <label class="drop" id="drop">
+          <input type="file" id="pImg" accept="image/*" hidden>
+          <img id="pPrev" class="hidden" alt="">
+          <span id="dropTxt">Click or drop a product image</span>
+        </label>
+        <input id="pName" placeholder="Product name" required>
+        <input id="pPrice" type="number" step="0.01" min="0" placeholder="Price in QAR" required>
+        <textarea id="pDesc" rows="3" placeholder="Description"></textarea>
+        <select id="pBrand" required></select>
+        <select id="pCat" required></select>
+        <button class="btn">Add product</button>
+      </form>
+    </section>
+
+    <section class="panel glass">
+      <h3>All products</h3>
+      <div id="prodList"></div>
+    </section>
+  </div>
+</div>
+
+<div id="toasts"></div>
+<script src="app.js"></script>
+</body>
+</html>
